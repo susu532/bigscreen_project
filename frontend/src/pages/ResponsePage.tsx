@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../services/api'
 import { Box, Typography, Alert, TextField, Container } from '@mui/material'
-import { GradientContainer, GlowingTypography } from '../components/styled/StyledComponents'
+import { GradientContainer, NeonButton } from '../components/styled/StyledComponents'
 import HolographicCard from '../components/HolographicCard'
 import AnimatedContainer from '../components/animations/AnimatedContainer'
 import AnimatedProgress from '../components/AnimatedProgress'
@@ -25,6 +25,37 @@ export default function ResponsePage() {
     api.get(`/responses/${slug}`).then(r => setData(r.data.data)).catch(() => setError('Not found')).finally(() => setLoading(false))
   }, [slug])
 
+  function exportCsv() {
+    if (!data) return
+    const headers = ['Email', 'Token', 'QuestionId', 'Question', 'Answer']
+    const rows = data.answers.map(a => [
+      data.email,
+      data.token,
+      a.question_id,
+      a.question?.question_text || '',
+      a.answer_text,
+    ])
+    const csvMatrix = [headers, ...rows]
+    const csv = csvMatrix
+      .map(row => row
+        .map((value) => {
+          const s = String(value ?? '')
+          const escaped = s.replace(/"/g, '""')
+          return /[",\n]/.test(s) ? `"${escaped}"` : escaped
+        })
+        .join(','))
+      .join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `response_${data.token}.csv`
+    document.body.appendChild(anchor)
+    anchor.click()
+    document.body.removeChild(anchor)
+    URL.revokeObjectURL(url)
+  }
+
   if (loading) return <Box p={4}><AnimatedProgress /></Box>
   if (error) return <Box p={4}><Alert severity="error">{error}</Alert></Box>
   if (!data) return null
@@ -33,6 +64,9 @@ export default function ResponsePage() {
     <GradientContainer>
       <Container maxWidth="md" sx={{ py: 6, position: 'relative', zIndex: 2 }}>
         <AnimatedTitle title="My Responses" subtitle="Your personal neon trail" align="left" variant="h5" />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+          <NeonButton onClick={exportCsv}>Export CSV</NeonButton>
+        </Box>
         <AnimatedContainer animationType="float" duration={0.8}>
           <Tilt3D>
             <HolographicCard sx={{ p: 3, mb: 3 }}>

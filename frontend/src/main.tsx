@@ -6,6 +6,7 @@ import theme from './theme'
 import EnhancedBackground from './components/EnhancedBackground'
 import './index.css'
 import App from './App.tsx'
+import NotificationProvider from './components/notifications/NotificationProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')!).render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <EnhancedBackground />
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,

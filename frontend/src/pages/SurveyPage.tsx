@@ -11,6 +11,7 @@ import AnimatedContainer from '../components/animations/AnimatedContainer'
 import AnimatedProgress from '../components/AnimatedProgress'
 import Tilt3D from '../components/effects/Tilt3D'
 import EnhancedInput from '../components/animations/EnhancedInput'
+import { useNotify } from '../components/notifications/NotificationProvider'
 
 type Question = {
   id: number
@@ -29,6 +30,7 @@ export default function SurveyPage() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState<boolean>(false)
   const navigate = useNavigate()
+  const notify = useNotify()
 
   useEffect(() => {
     api.get('/questions').then(r => {
@@ -54,10 +56,12 @@ export default function SurveyPage() {
     const emailOk = /.+@.+\..+/.test(emailAnswer)
     if (!emailOk) {
       setError('Please enter a valid email for Question 1.')
+      notify.warning('Please enter a valid email for Question 1.')
       return
     }
     if (Object.keys(answers).length !== 20) {
       setError('Please answer all 20 questions.')
+      notify.info('Some questions are missing — scrolled to the first one.')
       const firstMissing = questions.find(q => !answers[String(q.id)] || answers[String(q.id)].length === 0)
       if (firstMissing) {
         const el = document.getElementById(`q-${firstMissing.id}`)
@@ -76,10 +80,13 @@ export default function SurveyPage() {
         })),
       }
       const { data } = await api.post('/responses', payload)
+      notify.success('Responses submitted successfully!')
       const token = data?.data?.token
       navigate(`/response/${token}`)
     } catch (e: any) {
-      setError(e?.response?.data?.message || 'Submission failed')
+      const msg = e?.response?.data?.message || 'Submission failed'
+      setError(msg)
+      notify.error(msg)
     } finally { setSubmitting(false) }
   }
 
