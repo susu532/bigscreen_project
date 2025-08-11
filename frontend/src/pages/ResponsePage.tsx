@@ -8,6 +8,7 @@ import AnimatedContainer from '../components/animations/AnimatedContainer'
 import AnimatedProgress from '../components/AnimatedProgress'
 import Tilt3D from '../components/effects/Tilt3D'
 import AnimatedTitle from '../components/AnimatedTitle'
+import { useNotify } from '../components/notifications/NotificationProvider'
 
 type Answer = { id: number, answer_text: string, question_id: number, question?: { id: number, question_text: string } }
 type SurveyResponse = { token: string, email: string, answers: Answer[] }
@@ -20,9 +21,13 @@ export default function ResponsePage() {
   const [data, setData] = useState<SurveyResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const notify = useNotify()
 
   useEffect(() => {
-    api.get(`/responses/${slug}`).then(r => setData(r.data.data)).catch(() => setError('Not found')).finally(() => setLoading(false))
+    api.get(`/responses/${slug}`)
+      .then(r => setData(r.data.data))
+      .catch(() => { setError('Not found'); notify.error('Response not found'); })
+      .finally(() => setLoading(false))
   }, [slug])
 
   function exportCsv() {
@@ -54,6 +59,16 @@ export default function ResponsePage() {
     anchor.click()
     document.body.removeChild(anchor)
     URL.revokeObjectURL(url)
+    notify.success('CSV exported')
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      notify.success('Link copied to clipboard')
+    } catch {
+      notify.error('Failed to copy link')
+    }
   }
 
   if (loading) return <Box p={4}><AnimatedProgress /></Box>
@@ -64,7 +79,8 @@ export default function ResponsePage() {
     <GradientContainer>
       <Container maxWidth="md" sx={{ py: 6, position: 'relative', zIndex: 2 }}>
         <AnimatedTitle title="My Responses" subtitle="Your personal neon trail" align="left" variant="h5" />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mb: 2 }}>
+          <NeonButton onClick={copyLink}>Copy Link</NeonButton>
           <NeonButton onClick={exportCsv}>Export CSV</NeonButton>
         </Box>
         <AnimatedContainer animationType="float" duration={0.8}>

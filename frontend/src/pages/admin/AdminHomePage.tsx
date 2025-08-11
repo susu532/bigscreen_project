@@ -9,6 +9,7 @@ import Tilt3D from '../../components/effects/Tilt3D'
 import { Pie, Radar } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js'
 import AnimatedTitle from '../../components/AnimatedTitle'
+import { useNotify } from '../../components/notifications/NotificationProvider'
 
 ChartJS.register(ArcElement, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, Filler)
 
@@ -20,6 +21,7 @@ type PieChart = { labels: string[]; data: number[]; question?: string; total?: n
 export default function AdminHomePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const notify = useNotify()
   const [pie6, setPie6] = useState<PieChart | null>(null)
   const [pie7, setPie7] = useState<PieChart | null>(null)
   const [pie10, setPie10] = useState<PieChart | null>(null)
@@ -32,7 +34,7 @@ export default function AdminHomePage() {
       setPie7(d.pie_charts?.recommendation_likelihood || null)
       setPie10(d.pie_charts?.product_category || null)
       setRadar(d.radar_chart || null)
-    }).catch(() => setError('Failed to load stats')).finally(() => setLoading(false))
+    }).catch(() => { setError('Failed to load stats'); notify.error('Failed to load stats') }).finally(() => setLoading(false))
   }, [])
 
   if (loading) return <Box p={4}><AnimatedProgress /></Box>

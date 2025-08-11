@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { GradientContainer, NeonButton, GlowingTypography } from '../../components/styled/StyledComponents'
 import HolographicCard from '../../components/HolographicCard'
+import { useNotify } from '../../components/notifications/NotificationProvider'
 import AnimatedContainer from '../../components/animations/AnimatedContainer'
 
 /**
@@ -16,6 +17,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const notify = useNotify()
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -23,9 +25,12 @@ export default function AdminLoginPage() {
     setLoading(true)
     try {
       await login(email, password)
+      notify.success('Welcome back')
       navigate('/admin')
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Login failed')
+      const msg = err?.response?.data?.message || 'Login failed'
+      setError(msg)
+      notify.error(msg)
     } finally { setLoading(false) }
   }
 

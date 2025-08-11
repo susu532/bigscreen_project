@@ -5,6 +5,7 @@ import { GradientContainer, GlowingTypography } from '../../components/styled/St
 import HolographicCard from '../../components/HolographicCard'
 import AnimatedContainer from '../../components/animations/AnimatedContainer'
 import AnimatedTitle from '../../components/AnimatedTitle'
+import { useNotify } from '../../components/notifications/NotificationProvider'
 import AnimatedProgress from '../../components/AnimatedProgress'
 import Tilt3D from '../../components/effects/Tilt3D'
 
@@ -17,9 +18,10 @@ export default function AdminQuestionsPage() {
   const [rows, setRows] = useState<Question[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const notify = useNotify()
 
   useEffect(() => {
-    api.get('/admin/questionnaire').then(r => setRows(r.data.data || r.data)).catch(() => setError('Failed to load questions')).finally(() => setLoading(false))
+    api.get('/admin/questionnaire').then(r => setRows(r.data.data || r.data)).catch(() => { setError('Failed to load questions'); notify.error('Failed to load questions') }).finally(() => setLoading(false))
   }, [])
 
   if (loading) return <Box p={4}><AnimatedProgress /></Box>

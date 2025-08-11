@@ -4,6 +4,7 @@ import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead
 import { GradientContainer, GlowingTypography } from '../../components/styled/StyledComponents'
 import HolographicCard from '../../components/HolographicCard'
 import AnimatedContainer from '../../components/animations/AnimatedContainer'
+import { useNotify } from '../../components/notifications/NotificationProvider'
 import AnimatedTitle from '../../components/AnimatedTitle'
 import AnimatedProgress from '../../components/AnimatedProgress'
 import Tilt3D from '../../components/effects/Tilt3D'
@@ -20,6 +21,7 @@ export default function AdminResponsesPage() {
   const [rows, setRows] = useState<Response[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const notify = useNotify()
 
   useEffect(() => {
     setLoading(true)
@@ -28,7 +30,7 @@ export default function AdminResponsesPage() {
       const meta = r.data?.meta || {}
       setRows(data)
       setPages(meta.last_page || 1)
-    }).catch(() => setError('Failed to load responses')).finally(() => setLoading(false))
+    }).catch(() => { setError('Failed to load responses'); notify.error('Failed to load responses') }).finally(() => setLoading(false))
   }, [page])
 
   if (loading) return <Box p={4}><AnimatedProgress /></Box>
