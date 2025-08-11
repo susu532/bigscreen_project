@@ -39,7 +39,14 @@ type AlertStackProps = {
 
 export function AlertStack({ items, onDismiss }: AlertStackProps) {
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} sx={{
+      '& .MuiAlert-root': {
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        background: 'linear-gradient(135deg, rgba(20,20,30,0.8), rgba(30,20,50,0.8))',
+        boxShadow: '0 10px 24px rgba(0,0,0,0.35)'
+      }
+    }}>
       {items.map((i) => (
         <InlineAlert key={i.key} severity={i.severity} onClose={() => onDismiss?.(i.key)}>
           {i.message}

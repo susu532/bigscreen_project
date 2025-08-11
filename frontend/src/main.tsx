@@ -6,7 +6,7 @@ import theme from './theme'
 import EnhancedBackground from './components/EnhancedBackground'
 import './index.css'
 import App from './App.tsx'
-import NotificationProvider from './components/notifications/NotificationProvider'
+import NotificationProvider, { NotificationBinder } from './components/notifications/NotificationProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <CssBaseline />
         <EnhancedBackground />
         <NotificationProvider>
+          <NotificationBinder />
           <App />
         </NotificationProvider>
       </ThemeProvider>

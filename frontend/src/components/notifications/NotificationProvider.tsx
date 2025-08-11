@@ -1,8 +1,9 @@
-import { createContext, useCallback, useContext, useMemo, useState, PropsWithChildren } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, PropsWithChildren, useEffect } from 'react';
 import { Alert, Snackbar, Box, Typography } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { SlideProps } from '@mui/material/Slide';
 import type { SnackbarOrigin } from '@mui/material/Snackbar';
+import { setNotifier } from './notifier';
 import type { AlertColor } from '@mui/material/Alert';
 
 type Notification = {
@@ -157,6 +158,16 @@ export function useNotify() {
   const ctx = useContext(NotificationContext);
   if (!ctx) throw new Error('useNotify must be used within NotificationProvider');
   return ctx.notify;
+}
+
+// Bind global imperative notifier
+export function NotificationBinder() {
+  const notify = useNotify();
+  useEffect(() => {
+    setNotifier(notify as any);
+    return () => setNotifier(null);
+  }, [notify]);
+  return null;
 }
 
 
