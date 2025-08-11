@@ -1,24 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider, CssBaseline } from '@mui/material'
-import theme from './theme'
-import EnhancedBackground from './components/EnhancedBackground'
 import './index.css'
-import App from './App.tsx'
-import NotificationProvider, { NotificationBinder } from './components/notifications/NotificationProvider'
+
+// Import the VXR App for 3D virtual experience
+import VXRApp from './vxr/VXRApp'
+
+// Import the original App as fallback
+import App from './App'
+
+// Choose which app to run
+const USE_VXR = true // Set to false to use original App
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <EnhancedBackground />
-        <NotificationProvider>
-          <NotificationBinder />
-          <App />
-        </NotificationProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+    {USE_VXR ? <VXRApp /> : <App />}
   </StrictMode>,
 )
