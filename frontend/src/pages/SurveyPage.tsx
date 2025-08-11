@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from '../services/api'
 import { Typography, Box, RadioGroup, FormControlLabel, Radio, Alert, Container, ToggleButtonGroup, ToggleButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { GradientContainer, NeonButton } from '../components/styled/StyledComponents'
+import { GradientContainer } from '../components/styled/StyledComponents'
 import FuturisticTitle from '../components/FuturisticTitle'
 import ParallaxContainer from '../components/animations/ParallaxContainer'
 import AnimatedTitle from '../components/AnimatedTitle'
@@ -12,6 +12,7 @@ import AnimatedProgress from '../components/AnimatedProgress'
 import Tilt3D from '../components/effects/Tilt3D'
 import EnhancedInput from '../components/animations/EnhancedInput'
 import { useNotify } from '../components/notifications/NotificationProvider'
+import FinalizeButton from '../components/FinalizeButton'
 
 type Question = {
   id: number
@@ -186,9 +187,7 @@ export default function SurveyPage() {
           </Box>
           <AnimatedContainer animationType="breathe" duration={2}>
             <Tilt3D>
-              <NeonButton onClick={onSubmit} disabled={submitting}>
-                Finalize
-              </NeonButton>
+              <FinalizeButton onClick={onSubmit} loading={submitting} />
             </Tilt3D>
           </AnimatedContainer>
         </Box>
