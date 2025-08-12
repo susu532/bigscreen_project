@@ -6,6 +6,9 @@ import { useSceneStore, routePresets, qualityPresets } from '../hooks/useSceneSt
 import CyberGrid3D from '../objects/CyberGrid3D'
 import ParticlesGPU from '../objects/ParticlesGPU'
 import HoloPanel from '../objects/HoloPanel'
+import SurveyPanel from '../ui/SurveyPanel'
+import ResponsePanel from '../ui/ResponsePanel'
+import AdminPanels from '../ui/AdminPanels'
 
 // Background effects
 import FloatingElements from '../objects/FloatingElements'
@@ -78,41 +81,14 @@ export default function SceneManager() {
 function SurveyScene() {
   return (
     <>
-      {/* Main title panel */}
-      <HoloPanel 
-        position={[0, 2, 0]} 
-        size={[8, 2]} 
-        panelId="survey-title"
-        className="survey-title-panel"
-      />
-      
-      {/* Progress indicator */}
-      <HoloPanel 
-        position={[0, 1, 0]} 
-        size={[6, 1]} 
-        panelId="survey-progress"
-        className="survey-progress-panel"
-      />
-      
-      {/* Question panels - arranged in a scrollable column */}
-      {Array.from({ length: 20 }, (_, i) => (
         <HoloPanel 
-          key={i}
-          position={[0, -i * 1.5, 0]} 
-          size={[7, 3]} 
-          panelId={`question-${i + 1}`}
-          className="question-panel"
-          data={{ questionIndex: i + 1 }}
-        />
-      ))}
-      
-      {/* Floating action button */}
-      <HoloPanel 
-        position={[3, -1, 0]} 
-        size={[2, 1]} 
-        panelId="survey-submit"
-        className="submit-button-panel"
-      />
+          position={[0, 0, 0]} 
+          size={[8, 5]} 
+          panelId="survey-root"
+          className="survey-root-panel"
+      >
+        <SurveyPanel />
+      </HoloPanel>
     </>
   )
 }
@@ -121,29 +97,14 @@ function SurveyScene() {
 function ResponseScene() {
   return (
     <>
-      {/* Response summary panel */}
-      <HoloPanel 
-        position={[0, 2, 0]} 
-        size={[8, 2]} 
-        panelId="response-summary"
-        className="response-summary-panel"
-      />
-      
-      {/* Response details */}
-      <HoloPanel 
-        position={[0, 0, 0]} 
-        size={[8, 4]} 
-        panelId="response-details"
-        className="response-details-panel"
-      />
-      
-      {/* Navigation */}
-      <HoloPanel 
-        position={[0, -2, 0]} 
-        size={[6, 1]} 
-        panelId="response-nav"
-        className="response-nav-panel"
-      />
+        <HoloPanel 
+          position={[0, 0, 0]} 
+          size={[8, 5]} 
+          panelId="response-root"
+          className="response-root-panel"
+      >
+        <ResponsePanel />
+      </HoloPanel>
     </>
   )
 }
@@ -152,21 +113,14 @@ function ResponseScene() {
 function AdminScene() {
   return (
     <>
-      {/* Admin stats panel */}
-      <HoloPanel 
-        position={[0, 1, 0]} 
-        size={[6, 2]} 
-        panelId="admin-stats"
-        className="admin-stats-panel"
-      />
-      
-      {/* Quick actions */}
-      <HoloPanel 
-        position={[0, -1, 0]} 
-        size={[8, 1]} 
-        panelId="admin-actions"
-        className="admin-actions-panel"
-      />
+        <HoloPanel 
+          position={[0, 0, 0]} 
+          size={[8, 5]} 
+          panelId="admin-root"
+          className="admin-root-panel"
+      >
+        <AdminPanels />
+      </HoloPanel>
     </>
   )
 }
