@@ -25,6 +25,8 @@ export interface SceneState {
   // UI state
   hudVisible: boolean
   debugMode: boolean
+  viewMode: 'flat' | 'immersive180'
+  focusedIndex: number
   
   // Actions
   setQuality: (quality: QualityLevel) => void
@@ -37,6 +39,8 @@ export interface SceneState {
   setScenePreset: (preset: string) => void
   toggleHUD: () => void
   toggleDebugMode: () => void
+  setViewMode: (mode: 'flat' | 'immersive180') => void
+  setFocusedIndex: (index: number) => void
   resetToDefaults: () => void
 }
 
@@ -63,6 +67,8 @@ export const useSceneStore = create<SceneState>()(
     scenePreset: 'default',
     hudVisible: true,
     debugMode: false,
+    viewMode: 'flat',
+    focusedIndex: 0,
 
     // Actions
     setQuality: (quality) => set({ quality }),
@@ -81,6 +87,8 @@ export const useSceneStore = create<SceneState>()(
     setScenePreset: (scenePreset) => set({ scenePreset }),
     toggleHUD: () => set((state) => ({ hudVisible: !state.hudVisible })),
     toggleDebugMode: () => set((state) => ({ debugMode: !state.debugMode })),
+    setViewMode: (viewMode) => set({ viewMode }),
+    setFocusedIndex: (focusedIndex) => set({ focusedIndex }),
     resetToDefaults: () => set({
       quality: 'medium',
       effects: defaultEffects,
@@ -89,6 +97,8 @@ export const useSceneStore = create<SceneState>()(
       parallaxEnabled: true,
       hudVisible: true,
       debugMode: false,
+      viewMode: 'flat',
+      focusedIndex: 0,
     }),
   }))
 )

@@ -66,11 +66,15 @@ export default function HUDOverlay() {
     effects, 
     parallaxEnabled,
     currentRoute,
+    viewMode,
+    focusedIndex,
     toggleHUD, 
     toggleDebugMode, 
     setQuality, 
     toggleEffect,
     setParallaxEnabled,
+    setViewMode,
+    setFocusedIndex,
     resetToDefaults
   } = useSceneStore()
 
@@ -238,6 +242,32 @@ export default function HUDOverlay() {
               }}
             />
 
+            {/* 180° Mode Toggle */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={viewMode === 'immersive180'}
+                  onChange={(e) => setViewMode(e.target.checked ? 'immersive180' : 'flat')}
+                  size="small"
+                  sx={{
+                    '& .MuiSwitch-switchBase.Mui-checked': {
+                      color: theme.palette.primary.main,
+                    },
+                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                      backgroundColor: theme.palette.primary.main,
+                    },
+                  }}
+                />
+              }
+              label="180° Mode"
+              sx={{ 
+                '& .MuiFormControlLabel-label': { 
+                  fontSize: '0.875rem',
+                  color: theme.palette.text.primary
+                } 
+              }}
+            />
+
             {/* Reset Button */}
             <Box>
               <IconButton
@@ -269,6 +299,17 @@ export default function HUDOverlay() {
           <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
             Debug Mode Active
           </Typography>
+        </HUDItem>
+      )}
+
+      {/* Bottom-center: Immersive navigation */}
+      {viewMode === 'immersive180' && currentRoute === '/' && (
+        <HUDItem sx={{ bottom: 16, left: '50%', transform: 'translateX(-50%)' }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Chip label="Prev" size="small" onClick={() => setFocusedIndex(Math.max(0, focusedIndex - 1))} />
+            <Chip label={`Q ${focusedIndex + 1}`} size="small" />
+            <Chip label="Next" size="small" onClick={() => setFocusedIndex(focusedIndex + 1)} />
+          </Stack>
         </HUDItem>
       )}
     </HUDContainer>

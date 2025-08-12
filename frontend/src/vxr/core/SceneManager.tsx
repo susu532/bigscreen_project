@@ -6,6 +6,7 @@ import { useSceneStore, routePresets, qualityPresets } from '../hooks/useSceneSt
 import CyberGrid3D from '../objects/CyberGrid3D'
 import ParticlesGPU from '../objects/ParticlesGPU'
 import HoloPanel from '../objects/HoloPanel'
+import SurveyArc from '../ui/SurveyArc'
 import SurveyPanel from '../ui/SurveyPanel'
 import ResponsePanel from '../ui/ResponsePanel'
 import AdminPanels from '../ui/AdminPanels'
@@ -21,7 +22,8 @@ export default function SceneManager() {
     setScenePreset, 
     setCameraTarget,
     effects,
-    quality 
+    quality,
+    viewMode,
   } = useSceneStore()
 
   // Update scene based on route changes
@@ -62,9 +64,7 @@ export default function SceneManager() {
       <FloatingElements />
       
       {/* Route-specific UI Panels */}
-      {currentRoute === '/' && (
-        <SurveyScene />
-      )}
+      {currentRoute === '/' && (viewMode === 'immersive180' ? <SurveyScene180 /> : <SurveyScene />)}
       
       {currentRoute.startsWith('/response') && (
         <ResponseScene />
@@ -121,6 +121,15 @@ function AdminScene() {
       >
         <AdminPanels />
       </HoloPanel>
+    </>
+  )
+}
+
+// Survey Scene - Immersive 180° layout
+function SurveyScene180() {
+  return (
+    <>
+        <SurveyArc />
     </>
   )
 }

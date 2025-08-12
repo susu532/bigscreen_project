@@ -10,6 +10,7 @@ interface HoloPanelProps {
   size: [number, number]
   panelId: string
   className?: string
+  rotation?: [number, number, number]
   data?: Record<string, any>
   children?: React.ReactNode
 }
@@ -19,6 +20,7 @@ export default function HoloPanel({
   size, 
   panelId, 
   className = '',
+  rotation = [0, 0, 0],
   data = {},
   children 
 }: HoloPanelProps) {
@@ -67,7 +69,7 @@ export default function HoloPanel({
   }
 
   return (
-    <group position={position}>
+    <group position={position} rotation={rotation}>
       {/* Holographic panel mesh */}
       <Plane
         ref={meshRef}

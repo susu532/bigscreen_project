@@ -5,7 +5,7 @@ import { useSceneStore } from '../hooks/useSceneStore'
 
 export default function CameraRig() {
   const { camera } = useThree()
-  const { cameraTarget, parallaxEnabled } = useSceneStore()
+  const { cameraTarget, parallaxEnabled, focusedIndex } = useSceneStore()
   const mouseRef = useRef({ x: 0, y: 0 })
   const targetRef = useRef({ x: 0, y: 0, z: 5 })
 
@@ -37,6 +37,17 @@ export default function CameraRig() {
       z: cameraTarget[2] + 5 // Add some distance
     }
   }, [cameraTarget])
+
+  // Nudge camera slightly when focused index changes (immersive nav)
+  useEffect(() => {
+    // Small horizontal offset to give a sense of movement
+    const offsetX = (focusedIndex || 0) * 0.0001
+    targetRef.current = {
+      x: cameraTarget[0] + offsetX,
+      y: cameraTarget[1],
+      z: cameraTarget[2] + 5
+    }
+  }, [focusedIndex, cameraTarget])
 
   // Animate camera
   useFrame((state) => {
