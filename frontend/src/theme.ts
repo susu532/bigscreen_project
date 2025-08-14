@@ -4,20 +4,20 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#ff1493', // Deep pink
-      light: '#ff69b4', // Hot pink
-      dark: '#c2185b', // Dark pink
+      main: '#ff1493',
+      light: '#ff69b4',
+      dark: '#c2185b',
       contrastText: '#ffffff'
     },
     secondary: {
-      main: '#9932cc', // Dark violet
-      light: '#ba55d3', // Medium orchid
-      dark: '#6a0dad', // Blue violet
+      main: '#d633ff',
+      light: '#e066ff',
+      dark: '#a600ff',
       contrastText: '#ffffff'
     },
     background: {
-      default: '#0a0a0a', // Very dark background
-      paper: 'rgba(20, 20, 30, 0.8)' // Semi-transparent dark paper
+      default: '#0a0610',
+      paper: 'rgba(20, 12, 28, 0.82)'
     },
     text: {
       primary: '#ffffff',

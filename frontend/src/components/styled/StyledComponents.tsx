@@ -2,7 +2,9 @@ import { Box, Paper, Button, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 export const GradientContainer = styled(Box)(({ theme }) => ({
-  background: 'transparent',
+  background: `radial-gradient(1200px 600px at 0% 0%, ${theme.palette.primary.main}22 0%, transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, ${theme.palette.secondary.main}22 0%, transparent 60%),
+    linear-gradient(135deg, ${theme.palette.background.default} 0%, #12071c 100%)`,
   minHeight: '100vh',
   position: 'relative',
   overflow: 'hidden',
@@ -13,9 +15,9 @@ export const GradientContainer = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: `radial-gradient(circle at 20% 80%, ${theme.palette.primary.main}33 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, ${theme.palette.secondary.main}33 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, ${theme.palette.primary.light}22 0%, transparent 50%)`,
+    background: `radial-gradient(circle at 20% 80%, ${theme.palette.primary.main}55 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, ${theme.palette.secondary.main}55 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, ${theme.palette.primary.light}33 0%, transparent 50%)`,
     animation: 'float 10s ease-in-out infinite',
     zIndex: 0,
     pointerEvents: 'none'
@@ -27,11 +29,11 @@ export const GradientContainer = styled(Box)(({ theme }) => ({
 }))
 
 export const GlassCard = styled(Paper)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.08)',
+  background: 'rgba(255, 255, 255, 0.06)',
   backdropFilter: 'blur(20px)',
   border: '1px solid rgba(255, 255, 255, 0.2)',
   borderRadius: 24,
-  boxShadow: `0 0 40px ${theme.palette.primary.main}44, 0 0 80px ${theme.palette.secondary.main}22, 0 8px 32px rgba(0,0,0,0.3)`,
+  boxShadow: `0 0 40px ${theme.palette.primary.main}55, 0 0 80px ${theme.palette.secondary.main}33, 0 8px 32px rgba(0,0,0,0.35)`,
   position: 'relative',
   overflow: 'hidden',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -47,7 +49,7 @@ export const GlassCard = styled(Paper)(({ theme }) => ({
   },
   '&:hover': {
     transform: 'translateY(-8px) scale(1.02)',
-    boxShadow: `0 0 60px ${theme.palette.primary.main}66, 0 0 120px ${theme.palette.secondary.main}44, 0 16px 64px rgba(0,0,0,0.4)`,
+    boxShadow: `0 0 60px ${theme.palette.primary.main}88, 0 0 120px ${theme.palette.secondary.main}55, 0 16px 64px rgba(0,0,0,0.45)`,
   },
 }))
 
@@ -62,7 +64,7 @@ export const NeonButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
   position: 'relative',
   overflow: 'hidden',
-  boxShadow: `0 0 20px ${theme.palette.primary.main}88, 0 0 40px ${theme.palette.secondary.main}44, 0 4px 16px rgba(0,0,0,0.3)`,
+  boxShadow: `0 0 28px ${theme.palette.primary.main}aa, 0 0 56px ${theme.palette.secondary.main}66, 0 8px 24px rgba(0,0,0,0.35)`,
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   '::before': {
     content: '""',
@@ -77,7 +79,7 @@ export const NeonButton = styled(Button)(({ theme }) => ({
   },
   '&:hover': {
     transform: 'translateY(-2px) scale(1.05)',
-    boxShadow: `0 0 30px ${theme.palette.primary.main}, 0 0 60px ${theme.palette.secondary.main}66, 0 8px 24px rgba(0,0,0,0.4)`,
+    boxShadow: `0 0 40px ${theme.palette.primary.main}, 0 0 80px ${theme.palette.secondary.main}88, 0 10px 28px rgba(0,0,0,0.45)`,
     '::before': { left: '100%' },
   },
   '&:active': { transform: 'translateY(0px) scale(1.02)' },
@@ -100,13 +102,13 @@ export const GlowingTypography = styled(Typography)(({ theme }) => ({
   backgroundClip: 'text',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
-  textShadow: `0 0 15px ${theme.palette.primary.main}99, 0 0 30px ${theme.palette.secondary.main}66, 0 1px 3px rgba(0,0,0,0.3)`,
+  textShadow: `0 0 16px ${theme.palette.primary.main}aa, 0 0 32px ${theme.palette.secondary.main}88, 0 1px 3px rgba(0,0,0,0.35)`,
   position: 'relative',
   '::after': {
     content: '""',
     position: 'absolute',
     inset: 0,
-    background: `linear-gradient(45deg, ${theme.palette.primary.main}15, ${theme.palette.secondary.main}15)`,
+    background: `linear-gradient(45deg, ${theme.palette.primary.main}22, ${theme.palette.secondary.main}22)`,
     filter: 'blur(15px)',
     zIndex: -1,
     opacity: 0.6,
