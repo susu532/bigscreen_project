@@ -105,11 +105,12 @@ const HolographicCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   overflow: 'hidden',
   transformStyle: 'preserve-3d',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  // Remove conflicting transitions - let Tilt3D handle transforms
+  transition: 'box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  // Reduce animation intensity to prevent conflicts
   animation: `
-    ${hologramFlicker} 8s ease-in-out infinite,
-    ${borderScan} 6s linear infinite,
-    ${energyPulse} 4s ease-in-out infinite
+    ${hologramFlicker} 12s ease-in-out infinite,
+    ${energyPulse} 6s ease-in-out infinite
   `,
   
   '&::before': {
@@ -121,16 +122,17 @@ const HolographicCard = styled(Paper)(({ theme }) => ({
     bottom: '-2px',
     background: `
       linear-gradient(45deg,
-        rgba(255, 20, 147, 0.8) 0%,
-        rgba(153, 50, 204, 0.8) 25%,
-        rgba(138, 43, 226, 0.8) 50%,
-        rgba(186, 85, 211, 0.8) 75%,
-        rgba(255, 20, 147, 0.8) 100%
+        rgba(255, 20, 147, 0.6) 0%,
+        rgba(153, 50, 204, 0.6) 25%,
+        rgba(138, 43, 226, 0.6) 50%,
+        rgba(186, 85, 211, 0.6) 75%,
+        rgba(255, 20, 147, 0.6) 100%
       )
     `,
     borderRadius: '27px',
     zIndex: -1,
-    animation: `${borderScan} 3s linear infinite`,
+    // Slower, less aggressive animation
+    animation: `${borderScan} 8s linear infinite`,
   },
   
   '&::after': {
@@ -141,36 +143,38 @@ const HolographicCard = styled(Paper)(({ theme }) => ({
     right: 0,
     bottom: 0,
     background: `
-      radial-gradient(circle at 30% 30%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(153, 50, 204, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 30% 30%, rgba(255, 20, 147, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(153, 50, 204, 0.05) 0%, transparent 50%),
       linear-gradient(45deg, 
         transparent 30%,
-        rgba(255, 255, 255, 0.02) 50%,
+        rgba(255, 255, 255, 0.01) 50%,
         transparent 70%
       )
     `,
     borderRadius: '25px',
     pointerEvents: 'none',
-    animation: `${depthShift} 10s ease-in-out infinite`,
+    // Remove depthShift animation that conflicts with Tilt3D
+    animation: 'none',
   },
   
+  // Remove hover transform - let Tilt3D handle all transforms
   '&:hover': {
-    transform: 'perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(20px) scale(1.02)',
+    // Only enhance visual effects, no transforms
     boxShadow: `
-      0 25px 50px rgba(255, 20, 147, 0.4),
-      0 0 80px rgba(153, 50, 204, 0.3),
-      0 0 120px rgba(138, 43, 226, 0.2),
-      inset 0 0 40px rgba(255, 20, 147, 0.15)
+      0 15px 30px rgba(255, 20, 147, 0.3),
+      0 0 50px rgba(153, 50, 204, 0.2),
+      0 0 80px rgba(138, 43, 226, 0.1),
+      inset 0 0 20px rgba(255, 20, 147, 0.1)
     `,
     
     '&::before': {
       background: `
         linear-gradient(45deg,
-          rgba(255, 20, 147, 1) 0%,
-          rgba(153, 50, 204, 1) 25%,
-          rgba(138, 43, 226, 1) 50%,
-          rgba(186, 85, 211, 1) 75%,
-          rgba(255, 20, 147, 1) 100%
+          rgba(255, 20, 147, 0.8) 0%,
+          rgba(153, 50, 204, 0.8) 25%,
+          rgba(138, 43, 226, 0.8) 50%,
+          rgba(186, 85, 211, 0.8) 75%,
+          rgba(255, 20, 147, 0.8) 100%
         )
       `,
     }

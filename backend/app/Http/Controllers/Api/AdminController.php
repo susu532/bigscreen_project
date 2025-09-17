@@ -159,6 +159,53 @@ class AdminController extends Controller
     }
 
     /**
+     * Update a question
+     * 
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function updateQuestion(Request $request, int $id): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'question_text' => 'required|string|max:1000',
+                'type' => 'required|in:A,B,C',
+                'options' => 'nullable|array',
+                'options.*' => 'string|max:255'
+            ]);
+
+            $question = $this->adminService->updateQuestion($id, $validated);
+
+            if (!$question) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Question not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $question,
+                'message' => 'Question updated successfully'
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update question',
+                'error' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
+        }
+    }
+
+    /**
      * Get all survey responses for admin view
      * 
      * @param Request $request

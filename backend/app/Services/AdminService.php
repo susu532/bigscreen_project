@@ -293,6 +293,40 @@ class AdminService
     }
 
     /**
+     * Update a question
+     * 
+     * @param int $id
+     * @param array $data
+     * @return array|null
+     */
+    public function updateQuestion(int $id, array $data): ?array
+    {
+        $question = Question::find($id);
+        
+        if (!$question) {
+            return null;
+        }
+
+        // Update the question
+        $question->update([
+            'question_text' => $data['question_text'],
+            'type' => $data['type'],
+            'options' => $data['options'] ?? null
+        ]);
+
+        // Return the updated question in the same format as getAllQuestions
+        return [
+            'id' => $question->id,
+            'number' => $question->id,
+            'question_text' => $question->question_text,
+            'type' => $question->type,
+            'type_label' => $this->getTypeLabel($question->type),
+            'options' => $question->options,
+            'response_count' => $question->answers()->count()
+        ];
+    }
+
+    /**
      * Export responses to CSV
      * 
      * @return string CSV content

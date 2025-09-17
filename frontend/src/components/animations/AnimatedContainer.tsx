@@ -47,14 +47,16 @@ const StyledAnimatedContainer = styled(Box, {
 }>(({ theme, animationType = 'float', delay = 0, duration = 1 }) => ({
   position: 'relative',
   transformStyle: 'preserve-3d',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  // Remove conflicting transitions - let child components handle their own transforms
+  transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   
   ...(animationType === 'float' && {
     animation: `${floatIn} ${duration}s ease-out ${delay}s both`,
   }),
   
   ...(animationType === 'breathe' && {
-    animation: `${breathe} ${duration * 3}s ease-in-out infinite ${delay}s`,
+    // Reduce breathe animation intensity to prevent conflicts
+    animation: `${breathe} ${duration * 4}s ease-in-out infinite ${delay}s`,
   }),
   
   ...(animationType === 'shimmer' && {
@@ -69,20 +71,21 @@ const StyledAnimatedContainer = styled(Box, {
       background: `linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05),
         transparent
       )`,
-      animation: `${shimmerEffect} ${duration * 2}s ease-in-out infinite ${delay}s`,
+      animation: `${shimmerEffect} ${duration * 3}s ease-in-out infinite ${delay}s`,
       pointerEvents: 'none',
     }
   }),
   
+  // Remove hover transforms to prevent conflicts with Tilt3D
   '&:hover': {
-    transform: 'perspective(1000px) translateY(-8px) translateZ(20px) rotateX(5deg) scale(1.02)',
+    // Only subtle visual enhancements, no transforms
     boxShadow: `
-      0 25px 50px rgba(255, 20, 147, 0.3),
-      0 0 100px rgba(153, 50, 204, 0.2),
-      inset 0 0 30px rgba(255, 20, 147, 0.1)
+      0 10px 30px rgba(255, 20, 147, 0.2),
+      0 0 50px rgba(153, 50, 204, 0.15),
+      inset 0 0 20px rgba(255, 20, 147, 0.05)
     `,
   }
 }));

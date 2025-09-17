@@ -16,22 +16,28 @@ type Response = { id: number, email: string, submitted_at: string, answers: Answ
  * Admin responses view with a table per respondent.
  */
 export default function AdminResponsesPage() {
-  const [pages, setPages] = useState<number>(1)
-  const [page, setPage] = useState<number>(1)
   const [rows, setRows] = useState<Response[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [page, setPage] = useState<number>(1)
+  const [pages, setPages] = useState<number>(1)
   const notify = useNotify()
 
   useEffect(() => {
     setLoading(true)
-    api.get(`/admin/responses?page=${page}`).then(r => {
-      const data = r.data?.data || []
-      const meta = r.data?.meta || {}
-      setRows(data)
-      setPages(meta.last_page || 1)
-    }).catch(() => { setError('Failed to load responses'); notify.error('Failed to load responses') }).finally(() => setLoading(false))
-  }, [page])
+    api.get(`/admin/responses?page=${page}`)
+      .then(r => {
+        const data = r.data?.data || []
+        const meta = r.data?.meta || {}
+        setRows(data)
+        setPages(meta.last_page || 1)
+      })
+      .catch(() => {
+        setError('Failed to load responses')
+        notify.error('Failed to load responses')
+      })
+      .finally(() => setLoading(false))
+  }, [page, notify])
 
   if (loading) return <Box p={4}><AnimatedProgress /></Box>
   if (error) return <Box p={4}><Alert severity="error">{error}</Alert></Box>
@@ -43,7 +49,7 @@ export default function AdminResponsesPage() {
         {rows.map((resp, idx) => (
           <AnimatedContainer key={resp.id} animationType="float" duration={0.8} delay={idx * 0.05}>
             <Tilt3D>
-              <HolographicCard sx={{ p:2, mb: 3 }}>
+              <HolographicCard sx={{ p: 2, mb: 3 }}>
                 <Typography variant="subtitle1">{resp.email}</Typography>
                 <TableContainer>
                   <Table size="small">
@@ -74,8 +80,3 @@ export default function AdminResponsesPage() {
     </GradientContainer>
   )
 }
-
-
-
-
-

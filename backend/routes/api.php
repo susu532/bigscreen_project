@@ -44,6 +44,7 @@ Route::prefix('v1/admin')->middleware('auth:sanctum')->group(function () {
     
     // Questions management
     Route::get('/questionnaire', [AdminController::class, 'questionnaire']);
+    Route::put('/questions/{id}', [AdminController::class, 'updateQuestion']);
     
     // Responses management
     Route::get('/responses', [AdminController::class, 'responses']);
